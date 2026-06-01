@@ -452,14 +452,14 @@
 
     The variance of the process noise reads
     \begin{align}
-        \mathbb{E}\big[ w_{i_{1},j_{1}}(kT)\,w_{i_{2},j_{2}}(kT)\big]
+        \E{ w_{i_{1},j_{1}}(kT)\,w_{i_{2},j_{2}}(kT)}
         &= \delta_{i_{1},i_{2}}\,\frac{\sigma_{\mathrm{W},i_{1}}^{2}}{(j_{1}-1)!(j_{2}-1)!}\int_{(k-1)T}^{kT} (kT-\tau)^{\,j_{1}+j_{2}-2}\,\mathrm{d}\tau \nonumber \\
         &= \delta_{i_{1},i_{2}}\,\frac{\sigma_{\mathrm{W},i_{1}}^{2}}{(j_{1}-1)!(j_{2}-1)!}\,\frac{T^{\,j_{1}+j_{2}-1}}{j_{1}+j_{2}-1}.
     \end{align}
 
     Under the assumption of white noise, the process noise is uncorrelated across different time steps. Therefore,
     \begin{align}
-        \mathbb{E}\big[\xi_{\mathrm{W},i}(\tau')\,\xi_{\mathrm{W},i}(\tau)\big]
+        \E{\xi_{\mathrm{W},i}(\tau')\,\xi_{\mathrm{W},i}(\tau)}
         &= \sigma_{\mathrm{W},i}^{2}\,\delta(\tau-\tau') \\
         &= \begin{cases}
             \sigma_{\mathrm{W},i}^{2}, & \tau-\tau' = 0, \\
@@ -473,9 +473,9 @@
     \frametitle{Line-of-sight phase model} It allows us to write the variance of the process noise as
 
     \begin{align}
-        \mathbb{E}\big[ w_{i,j_{1}}(kT)\,w_{i,j_{2}}(kT)\big]
+        \E{w_{i,j_{1}}(kT)\,w_{i,j_{2}}(kT)}
         &= \frac{1}{(j_{1}-1)!(j_{2}-1)!} \int_{(k-1)T}^{kT}\int_{(k-1)T}^{kT} (kT-\tau')^{j_{1}-1}(kT-\tau)^{j_{2}-1} \\
-        &\qquad\times \mathbb{E}\big[\xi_{\mathrm{W},i}(\tau')\,\xi_{\mathrm{W},i}(\tau)\big] \,\mathrm{d}\tau'\,\mathrm{d}\tau \\
+        &\qquad\times \E{\xi_{\mathrm{W},i}(\tau')\,\xi_{\mathrm{W},i}(\tau)} \,\mathrm{d}\tau'\,\mathrm{d}\tau \\
         &= \frac{\sigma_{\mathrm{W},i}^{2}}{(j_{1}-1)!(j_{2}-1)!} \int_{(k-1)T}^{kT} (kT-s)^{j_{1}+j_{2}-2} \,\mathrm{d}s \\
         &= \frac{\sigma_{\mathrm{W},i}^{2}}{(j_{1}-1)!(j_{2}-1)!}\,\frac{T^{\,j_{1}+j_{2}-1}}{j_{1}+j_{2}-1}.
     \end{align}
@@ -488,8 +488,8 @@
     Finally, the covariance matrix of the process noise is given by
 
     \begin{align}
-        \mathbb{E}\big[\mathbf{w}_{W}[k]\,\mathbf{w}_{W}[k]^{\top}\big]
-        &= \mathbb{E}\Big[\Big(\sum_{i=1}^{3} \mathbf{w}_{i}(kT)\Big)\Big(\sum_{i=1}^{3} \mathbf{w}_{i}(kT)\Big)^{\top}\Big] = \mathbb{E}\Big[\sum_{i=1}^{3} \mathbf{w}_{i}(kT)\,\mathbf{w}_{i}(kT)^{\top}\Big] \\
+        \E{\mathbf{w}_{W}[k]\,\mathbf{w}_{W}[k]^{\top}}
+        &= \E{\Big(\sum_{i=1}^{3} \mathbf{w}_{i}(kT)\Big)\Big(\sum_{i=1}^{3} \mathbf{w}_{i}(kT)\Big)^{\top}} = \E{\sum_{i=1}^{3} \mathbf{w}_{i}(kT)\,\mathbf{w}_{i}(kT)^{\top}} \\
         &= \sigma_{\mathrm{W},1}^{2}\begin{bmatrix}
             T & 0 & 0 \\
             0 & 0 & 0 \\
@@ -506,6 +506,18 @@
             \dfrac{T^{3}}{6} & \dfrac{T^{2}}{2} & T
         \end{bmatrix}.
     \end{align}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Line-of-sight phase model}
+
+    \begin{align}
+        \E{\mathbf{w}_{W}[k]\,\mathbf{w}_{W}[k]^{\top}}
+        &= \sigma_{\mathrm{W},1}^{2} \mathbf{Q}_{1} + \sigma_{\mathrm{W},2}^{2} \mathbf{Q}_{2} + \sigma_{\mathrm{W},3}^{2} \mathbf{Q}_{3} 
+    \end{align}
+
+    The variances that multiplies each subcovariance matrices models the uncertainties on the state vector variables \cite{fohlmeisterGNSSCarrierPhase2021}.
 
 \end{frame}
 
