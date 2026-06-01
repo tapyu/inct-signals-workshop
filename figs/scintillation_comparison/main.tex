@@ -1,0 +1,38 @@
+\documentclass[tikz,border=2mm]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+
+\begin{document}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=12cm, height=7cm,
+    grid=both,
+    xlabel={Time [s]}, ylabel={\(C/N_0\) [dB-Hz]},
+    xmin=0, xmax=25.1,
+    ymin=8, ymax=48,
+    enlarge x limits=false,
+    enlarge y limits=false,
+    ymin = 0,
+    xtick distance=5,
+    xmax = 25,
+    % legend style={draw=none, fill=none},
+    legend pos=south east
+  ]
+    \addplot+[thick, color=blue, mark=none]
+      table[col sep=comma, x index=0, y index=1] {scintillation.csv};
+    \addlegendentry{Scintillation}
+
+    \addplot+[thick, color=red, mark=none]
+      table[col sep=comma, x index=0, y index=1] {nonscintillation.csv};
+    \addlegendentry{Non-scintillation}
+
+    \addplot+[thick, dashed, color=green!60!black, mark=none]
+      coordinates {(0,28) (25.1,28)};
+    \addlegendentry{Tracking threshold}
+
+    \addplot+[thick, dashed, color=black, mark=none]
+      coordinates {(0,33) (25.1,33)};
+    \addlegendentry{Acquisition threshold}
+  \end{axis}
+\end{tikzpicture}
+\end{document}

@@ -3,6 +3,9 @@
 ]{beamer_class}
 \usepackage{soul} % In text mode, the \underline command will enclose its argument in a horizontal box, which doesn't allow linebreaks. Use the \ul command of the soul package instead.
 \usepackage[absolute,overlay]{textpos} % insert absolute text positioning with textblock environment
+\usepackage{booktabs} % nicer rules for tables: \toprule, \midrule, \bottomrule
+\usepackage{array} % flexible column types (p{..}) and ragged-right modifiers
+\usepackage{svg} % allow including SVGs via \includesvg (requires Inkscape + -shell-escape)
 \input{default_preamble.tex}
 \input{default_glossary_entries.tex}
 
@@ -47,151 +50,273 @@
  
 \frame[noframenumbering,plain]{\titlepage}
  
-\begin{frame}
-	\frametitle{Outline}
-	\tableofcontents[pausesections]
-\end{frame}
+% \begin{frame}
+% 	\frametitle{Outline}
+% 	\tableofcontents[pausesections]
+% \end{frame}
 
 \section{Introduction}
-\begin{frame}[<+->][t]{Ionospheric Scintillation}%[<+->][t]{Ionospheric Scintillation}
-    \begin{columns}
+\begin{frame}[t]{Ionospheric Scintillation}%[<+->][t]{Ionospheric Scintillation}
+    \begin{columns}[t]
 		\column{0.5\textwidth}
-        \begin{visibleenv}<.->
-        \begin{figure}[t]
-            \centering
-            \includegraphics[scale=0.38]{figs/ionospheric_scint/main.pdf}
-            \caption{Ionospheric scintillation -- an overview.}
-        \end{figure}
+        \begin{visibleenv}<+->
+            \begin{figure}[t]
+                \centering
+                \begin{tabular}{@{}c@{\hspace{0.35em}}c@{}}
+                    \includegraphics[width=0.47\linewidth]{figs/TECU_2pm.png} &
+                    \includegraphics[width=0.47\linewidth]{figs/TECU_5pm.png} \\
+                    \includegraphics[width=0.47\linewidth]{figs/TECU_8pm.png} &
+                    \includegraphics[width=0.47\linewidth]{figs/TECU_10am.png}
+                \end{tabular}
+                \caption{Temporal evolution of the \cgls{tec} unit index. Obtained from \textcite{IONMONLatest}.}
+            \end{figure}
         \end{visibleenv}
 		\column{0.5\textwidth}
         \begin{visibleenv}<+->
-		\begin{figure}[t]
-			\centering
-			\begin{tabular}{@{}c@{\hspace{0.35em}}c@{}}
-				\includegraphics[width=0.47\linewidth]{figs/TECU_2pm.png} &
-				\includegraphics[width=0.47\linewidth]{figs/TECU_5pm.png} \\
-				\includegraphics[width=0.47\linewidth]{figs/TECU_8pm.png} &
-				\includegraphics[width=0.47\linewidth]{figs/TECU_8pm.png}
-			\end{tabular}
-            \caption{Temporal evolution of the \cgls{tec} unit index.}
-		\end{figure}
+            \begin{figure}[t]
+                \centering
+                \includegraphics[scale=0.38]{figs/ionospheric_scint/main.pdf}
+                \caption{Ionospheric scintillation -- an overview.}
+            \end{figure}
+        \end{visibleenv}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]{Effects on GNSS}%[<+->][t]{Ionospheric Scintillation}
+    \begin{columns}
+		\column{0.5\textwidth}
+        \begin{visibleenv}<+->
+            \begin{figure}[t]
+                \centering
+                \includegraphics[width=1\linewidth]{figs/scintillation_comparison/main.pdf}
+                \caption{\(C/N_0\) level for scintillation (blue curve\secret{PRN 7}) and nonscintillation (red curve\secret{PRN 8}) events. Adapted from \textcite{kintnerGPSIonosphericScintillations2007}.}
+            \end{figure}
+        \end{visibleenv}
+		\column{0.5\textwidth}
+        \begin{visibleenv}<+->
+            \begin{figure}[t]
+                \centering
+                \includegraphics[width=0.9\linewidth]{figs/positioning_error.png}
+                \caption{Positioning error due to ionospheric scintillation. Obtained from \textcite{lintyEffectsPhaseScintillation2018}.}
+            \end{figure}
         \end{visibleenv}
 	\end{columns}
 \end{frame}
 
 
-\section{Introduction}
-\begin{frame}[<+->][t]{Introduction}
-	Note: For each of the basic commands \textbackslash only, \textbackslash uncover, \textbackslash invisible and
-\textbackslash alt there exists ``environment versions'': onlyenv, altenv, visibleenv, uncoverenv \& invisibleenv.
-	\begin{align}
-		\uncover<+->{A = & aL R^b \nonumber \\}
-		\uncover<+->{R = & \left(\frac{A}{aL}\right)^{\frac{1}{b}}}
-		\label{power_law}
-	\end{align}
-	\begin{visibleenv}<+->
-		Applying the \(\ln\) transformation in both side of this equation, we have
-		\begin{align}
-			\uncover<+->{\ln R = & \frac{1}{b} \ln A - \frac{\ln \left(aL\right)}{b} \nonumber}
-			\uncover<+->{\underbrace{\ln R}_{y} = & \underbrace{\frac{1}{b}}_{\theta_1} \underbrace{\ln A}_x \underbrace{- \frac{\ln \left(aL\right)}{b}}_{\theta_0} \nonumber}
-		\end{align}
-        
-		\uncover<+->{Hence, we have a linear model, i.e., \(y = \theta_1 x + \theta_0\).}
-	\end{visibleenv}
+\section{Signal model}
+\begin{frame}[<+->][t]{GNSS -- Signal processing chain}
+	\begin{figure}[t]
+        \centering
+        \includegraphics[width=0.9\linewidth]{figs/gnss_overview.png}
+        % \caption{Positioning error due to ionospheric scintillation. Obtained from \textcite{lintyEffectsPhaseScintillation2018}.}
+    \end{figure}
 \end{frame}
 
-\begin{frame}[<+->][t]
-	\frametitle{teste}
+\begin{frame}[t] % [<+->]
+	\frametitle{Prior works -- The state of the art}
+
+    \begin{columns}
+		\column{0.5\textwidth}
+        \textbf{For mitigation}
+        \begin{visibleenv}<+(1)->
+            \begin{itemize}
+                \item \textbf{Goal}: Despite the presence of scintillation, keep tracking the signal parameters and computing the \cgls{pvt} solution;
+                \item \textbf{Approach}: Design of robust tracking loops \cite{barreauKalmanFilterBased2012, psiakiExtendedKalmanFilter2002,florindoMultiFrequencyKalmanFilter2024,fohlmeisterDualKalmanFiltering2018};
+                \item \textbf{Trade-off}: Bayesian, but not tailored to monitoring applications;
+            \end{itemize}
+        \end{visibleenv}
+        
+		\column{0.5\textwidth}
+        \textbf{For monitoring}
+        \begin{visibleenv}<+(1)->
+            \begin{itemize}
+                \item \textbf{Goal}: Precisely estimate the scintillation-induced fluctuations;
+                \item \textbf{Approach}: Operate in open or semi-open loop and explore the geometry knowledge to disentangle the scintillation effects from the receiver's dynamics \cite{xuSemiOpenLoopGNSS2018,lintyOpenLoopReceiverArchitecture2019,gnssDevelopingIonosphericScintillation2014,jiaoEquatorialScintillationAmplitude2016};
+                \item \textbf{Trade-off}: Uses the geometry knowledge, but not Bayesian;
+            \end{itemize}
+        \end{visibleenv}
+	\end{columns}
 	
-	\only<2>{Only: Neither occupies space nor is visible}
-	\visible<3>{Visible: Occupies space but is invisible}
-	\uncover<4>{But uncover both occupies space and is visible} Final test
+	% \only<2>{Only: Neither occupies space nor is visible}
+	% \visible<3>{Visible: Occupies space but is invisible}
+	% \uncover<4>{But uncover both occupies space and is visible} Final test
+\end{frame}
+
+\begin{frame}[c]
+	% \frametitle{Goal}
+	\vspace{6pt}
+
+	\begin{alertblock}{Main goal}
+        Incorporate the geometry information to the Bayesian framework to provide provide robust tracking performance in closed loop, while also providing accurate scintillation monitoring capabilities.
+    \end{alertblock}
+
+    \begin{itemize}
+        \item<+(1)-> \textbf{Advantage}: Bayesian approach with external information of the receiver--satellite radiolink dynamics, with potential for solving coupling issues between the receiver's dynamics and the scintillation effects;
+        \item<+(1)-> \textbf{Disadvantage}: Offline processing is necessary for best performance, but for scientific applications, it is not problematic;
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[t]
-	\frametitle{Master Dissertation highlight's}
-	Objetivo geral: Concepção da arquitetura digital do modem AFSK. Implementação do protótipo lógico no \textit{software} \textit{MATLAB/Simulink}. 
-
-	\vspace{6pt}
-
-	Objetivos específicos:
-	\begin{itemize}
-		\item Descrição matemática de uma nova arquitetura de modulador AFSK.
-		\item Derivação do limite superior para a probabilidade de erro.
-		\item Estimadores de fase e tempo para a nova arquitetura.
-	\end{itemize}
+	\frametitle{Kalman filter-based tracking loops}
+    Standard \gls{kf}-\gls{pll} formulation:
+	\begin{align}
+     \underbrace{\begin{bmatrix}
+        \hat{\phi} \left[ k \right] \\
+        \hat{\dot{\phi}} \left[ k \right] \\
+        \hat{\ddot{f}} \left[ k \right]
+    \end{bmatrix}}_{= \mathbf{x} \left[ k \right]} & = \underbrace{\begin{bmatrix}
+        1 & 2 \pi T & \pi T^2 \\
+        0 & 1 & T \\
+        0 & 0 & 1
+    \end{bmatrix}}_{= \mathbf{F}_{\mathrm{W}}} \underbrace{\begin{bmatrix}
+        \hat{\phi} \left[ k-1 \right] \\
+        \hat{\dot{\phi}} \left[ k-1 \right] \\
+        \hat{\ddot{f}} \left[ k-1 \right]
+    \end{bmatrix}}_{= \mathbf{x} \left[ k-1 \right]} + \mathbf{w} \left[ k \right], \quad \mathbf{w} \left[ k \right] \sim \mathcal{N} \left( \mathbf{0}, \mathbf{Q} \right) \\
+    \underbrace{\phi \left[ k \right]}_{= z \left[ k \right]} & = \underbrace{\begin{bmatrix}
+        1 & 0 & 0
+    \end{bmatrix}}_{= \mathbf{H}_{\mathrm{W}}} \underbrace{\begin{bmatrix}
+        \hat{\phi} \left[ k \right] \\
+        \hat{\dot{\phi}} \left[ k \right] \\
+        \hat{\ddot{f}} \left[ k \right]
+    \end{bmatrix}}_{= \mathbf{x} \left[ k \right]} + v \left[ k \right], \quad v \left[ k \right] \sim \mathcal{N} \left( 0, \sigma_{v}^{2} \right)
+    \end{align}
 \end{frame}
+
+\begin{frame}[t]
+	\frametitle{Kalman filter-based tracking loops}
+    \begin{figure}[t]
+        \centering
+        \includegraphics[width=0.9\linewidth]{figs/kf_pll/main.pdf}
+        % \caption{Positioning error due to ionospheric scintillation. Obtained from \textcite{lintyEffectsPhaseScintillation2018}.}
+    \end{figure}
+
+    {\scriptsize \Gls{sota} \gls{kf} variants: \gls{akf} \cite{vila-vallsAdvancedKFbasedMethods2015,locubiche-serraDoublyadaptiveAutoregressiveKalman2016,locubiche-serraPerformanceLimitsBenefits2021}, \gls{ekf} \cite{vila-vallsAdvancedKFbasedMethods2015,psiakiExtendedKalmanFilter2002}, dual \gls{kf} \cite{fohlmeisterDualKalmanFiltering2018}, \gls{ahl-kf-ar} \cite{locubiche-serraPerformanceAssessmentLowcomplexity2021}, \gls{rbf}-\gls{kf} \cite{lopesIonosphericScintillationMitigation2023} \gls{akf} \cite{vila-vallsMitigationIonosphericScintillation2018}; \gls{sota} applications: \gls{mf} and \gls{mc};}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Results from the SOTA KF-based tracking algorithms}
+    \begin{figure}[t]
+        \centering
+        \includegraphics[width=0.8\linewidth]{figs/cpssm_w_refr_mrmse.pdf}
+        \caption{Results for the \cgls{cpssm} \cite{pacelliItagnsslabGnssscintillationsimulator2025}.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Results from the SOTA KF-based tracking algorithms}
+    \begin{figure}[t]
+        \centering
+        \includegraphics[width=0.7\linewidth]{figs/cpssm_w_refr_phase_errors_approaches_comparison.pdf}
+        \caption{Results for the \cgls{cpssm} \cite{pacelliItagnsslabGnssscintillationsimulator2025}.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Signal model}
+	Baseband carrier phase model:
+    \begin{align}
+        \phi_{\mathrm{T}} \left( t \right) = \underbrace{2\pi \int_{t_{\mathrm{a}}}^{t} f_{\mathrm{D}} \left( u, n_{\mathrm{c}} \right)\dd{u} + \phi_{\mathrm{LOS}} \left( t_{\mathrm{a}}, n_{\mathrm{c}} \right)}_{\textnormal{Line-of-sight dynamics}} + \underbrace{\phi_{\mathrm{atm}} \left( t, n_{\mathrm{c}} \right)}_{\textnormal{Atmospheric effects}}
+    \end{align}
+    \begin{visibleenv}<+(1)->
+        The LOS phase reads
+        \begin{align}
+            \phi_{\mathrm{LOS}} \left( t_{\mathrm{a}}, n_{\mathrm{c}} \right) & = - 2\pi f_{\mathrm{c}} \overbrace{\frac{\rho_{\mathrm{s,g}} \left( t_{\mathrm{a}}, n_{\mathrm{c}} \right)}{c_{0}}}^{\textnormal{sat-rx dist. [m]}} = - 2\pi f_{\mathrm{c}} \tau_{\mathrm{LOS}}\left( t_{\mathrm{a}}, n_{\mathrm{c}} \right) \nonumber \\
+         & = - 2 \pi f_{\mathrm{c}} \int_{t_{t}}^{t_{\mathrm{a}}} \frac{\partial \tau_{\mathrm{LOS}}\left( u, n_{\mathrm{c}} \right)}{\partial u}\dd{u} = 2 \pi \int_{t_{t}}^{t_{\mathrm{a}}} f_{\mathrm{D}} \left( u, n_{\mathrm{c}} \right) \dd{u}% = - \frac{2 \pi f_{\mathrm{c}} \rho_{\mathrm{s,g}}\left( t_{\mathrm{a}}, n_{\mathrm{c}} \right) }{c_{0}}
+        \end{align}
+    \end{visibleenv}
+\end{frame}
+
+
+\begin{frame}[t]
+	\frametitle{Geometry-aided Kalman filter-based tracking loop}
+    Considering an \gls{ar} augmented \gls{ssm}, let \(\mathbf{x} \left[ k \right]= \begin{bmatrix}
+        \hat{\phi}_{\mathrm{LOS}} \left[ k \right] &
+        \hat{f}_{\mathrm{D}} \left[ k \right] &
+        \hat{\dot{f}}_{\mathrm{D}} \left[ k \right] &
+        \hat{\phi}_{\textnormal{s}} \left[ k \right] &
+        \hat{\phi}_{\textnormal{s}} \left[ k-1 \right] &
+        \cdots &
+        \hat{\phi}_{\textnormal{s}} \left[ k-p-1 \right] &
+    \end{bmatrix}^\top\), then
+	\begin{align}
+     \mathbf{x} \left[ k \right] & = \mathrm{blkdiag} \left( \mathbf{F}_{\mathrm{W}}, \mathbf{F}_{\mathrm{AR}} \right) \mathbf{x} \left[ k-1 \right] + \mathbf{w} \left[ k \right], \quad \mathbf{w} \left[ k \right] \sim \mathcal{N} \left( \mathbf{0}, \mathbf{Q} \right) \\
+    \underbrace{\begin{bmatrix}
+        \hat{\phi} \left[ k \right] \\
+        \hat{\rho}_{\textnormal{s}, \textnormal{g}} \left[ k \right]
+    \end{bmatrix}}_{= \mathbf{z} \left[ k \right]} & = \underbrace{\begin{bmatrix}
+        1 & 0 & 0 & 1 & 0 & \cdots & 0 \\
+        - \frac{2 \pi f_{\mathrm{c}}}{c_{0}} & 0 & 0 & 0 & 0 & \cdots & 0
+    \end{bmatrix}}_{= \mathbf{H}} \mathbf{x} \left[ k \right] + \mathbf{v} \left[ k \right], \quad \mathbf{v} \left[ k \right] \sim \mathcal{N} \left( \mathbf{0}, \mathbf{R} \right)
+    \end{align}
+\end{frame}
+
+
+\begin{frame}[t]
+	\frametitle{External information incorporation}
+    
+
+    \(\hat{\rho}_{\textnormal{s}, \textnormal{g}} \left[ k \right]\) is an external information source which inputs the Bayesian framework, but contain a certain degree of uncertainty \cite[Table 4.5]{hofmann-wellenhofGlobalPositioningSystem2012}:
+
+    \begin{table}
+    \centering
+    \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth} >{\raggedright\arraybackslash}p{0.22\textwidth} >{\centering\arraybackslash}p{0.14\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+    \toprule
+    Ephemeris & Uncertainty range & Update rate & Remarks \\
+    \midrule
+    Almanac & Kilometers & week & Long-term validity  \\
+    \hline
+    Broadcast & \(\approx 1\) m & mins to hours & Precision varies according to the axis\footnote{18 cm (radial), 98 cm (along-track), and 60 cm (cross-track) \cite{kaplanUnderstandingGPSGNSS2017}.}. \\
+    \hline
+    Precise & \(\approx 0.05-0.20\) m & Varies & Depends of reference stations\footnote{Such as those operated by the \gls{igs}.}. \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+\end{frame}
+
 
 \begin{frame}
-	\frametitle{teste}
-	\begin{table}
-		\begin{tabular}{|p{8cm} | l|}
-			\hline
-			Undergraduated in Electronic Engineering at Unifor(Universidade de Fortaleza) & 2013-2018 \\
-			\hline
-		\end{tabular}
-	\end{table}
-\end{frame}
+    \frametitle{Precise ephemerides}
 
-\begin{frame}
-	\frametitle{teste}
-
-	\begin{columns}
-		\column{0.5\textwidth}
-		text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
-		\column{0.5\textwidth}
-		text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
-	\end{columns}
-\end{frame}
-
-\begin{frame}[<+->][t]{Who am I?}
-	Some personal information:
-	\begin{itemize}
-		\item Rubem Vasconcelos Pacelli, 27 years old.
-		\item I am from Fortaleza, Ceará, Brazil.
-	\end{itemize}
-	\uncover<.->{Academic information:}
-	\begin{itemize}
-		\item \begin{tabular*}{0.9\textwidth}[t]{p{7cm}@{\extracolsep{\fill}}r}
-			BSc in Electronic Engineering at \newline Unifor(Universidade de Fortaleza) & Jan 2013 -- Dec 2018 \end{tabular*}%\vspace{-7pt}
-		\item \begin{tabular*}{0.9\textwidth}[t]{p{6.5cm}@{\extracolsep{\fill}}r}
-			MSc in Teleinformatics Engineering at Federal University of Ceará.  & Jan 2019 -- \emph{Jun 2021} \end{tabular*}%\vspace{-7pt}
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}[<+->]
-	\frametitle{What is my technical skills?}
-
-	\uncover{Programming (and hardware description) Languages:}
-	\begin{itemize}
-		\item Matlab/Simulink: 5 years of experience, approximately.
-		\item Python: 2 years of intense usage.
-		\item C, C++, VHDL, and Java: Secondary usage.
-	\end{itemize}
-
-	\uncover<+(1)->{Some further technical skills:}
-	\begin{itemize}
-		\item Git: Elementary concepts.
-		\item \LaTeX: Elementary concepts.
-	\end{itemize}
-
-	\uncover<+(1)->{Language skills:}
-	\begin{itemize}
-		\item English: Full professional working proficiency (Level B2 on TOEFL IBT. Total score: 74 out of 120).
-		\item Portuguese: Native Language.
-	\end{itemize}
-
-\end{frame}
-
-\begin{frame}{Main challenges}
+    Availability of Precise ephemerides:
     \begin{itemize}
-        \item The design of modern digital modems for the further development of CubeSat satellite systems;
-        \item The usage of the software-defined radio (SDR) concept, combined with the  enhancement of digital signal processing techniques, FPGA (field-programmable gate array), and microelectronics, has motivated a new generation of TT\&C (telemetry, tracking and command) modules that \ul{brings hardware flexibility, but at the same time, matches with the current modulation schemes}.
+        \item \textbf{Ultra-rapid} (predicted half): Available in real-time, with an accuracy of roughly 3 to 10 cm.
+        \item \textbf{Ultra-rapid} (observed half): Available with a 3- to 9-hour latency, offering < 5 cm accuracy.
+        \item \textbf{Rapid}: Available with a 17-hour latency, offering < 2.5 to 5 cm accuracy.
+        \item \textbf{Final}: Available after 12 to 18 days, providing the highest orbital accuracy of approximately 2 to 5 cm.
     \end{itemize}
-    \begin{textblock}{8}(1,4.5)
-        The Viterbi algorithm is employed for the maximum likelihood sequence detection, and its statistics are feedbacked to estimate the phase and timing offset.
-    \end{textblock}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Conclusions \& Future works}
+
+    \textbf{Conclusions}
+    \begin{itemize}
+        \item \gls{kf}-based tracking algorithms struggle to provide accurate estimates of the scintillation-induced fluctuations, especially for strong scintillation events;
+        \item The incorporation of external information about the receiver--satellite radiolink dynamics can potentially solve coupling issues;
+    \end{itemize}
+
+    \textbf{Future works}: nested loop simulation for
+    \begin{itemize}
+        \item Kalman filter variants
+        \item External information sources (e.g., precise ephemerides, inertial sensors, etc.)
+        \item Scintillation scenarios (e.g., weak, moderate, and strong scintillation events)
+        \item Scintillation models
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[c]
+    \frametitle{Feel free to access our available material and to connect with us!}
+
+    \begin{figure}[c]
+        \centering
+        \includegraphics[width=0.4\linewidth]{figs/qr_code.png}
+        % \caption{Results for the \cgls{cpssm} \cite{pacelliItagnsslabGnssscintillationsimulator2025}.}
+    \end{figure}
+
 \end{frame}
 
 \end{document}
